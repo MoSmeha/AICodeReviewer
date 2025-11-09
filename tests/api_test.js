@@ -2,6 +2,8 @@ import dotenv from "dotenv";
 import Ajv from "ajv";
 //https://stackoverflow.com/questions/78217036/typeerror-err-import-attribute-missing-module-package-json-needs-an-import
 import schema from "./schema.json" with {type:'json'}
+//i put it in .gitignore to keep it "hidden"
+import humanReviews from "./human_reviews.json" with {type:'json'}
 dotenv.config();
 
 const ajv = new Ajv();
@@ -11,21 +13,21 @@ const sampleCodeSnippet = {
   file: "sample.py",
   code: "a = c+B"
 };
-
-const humanReviews = [
-  {
-    severity: "medium",
-    file: "sample.py",
-    issue: "Variable 'c' and 'B' should follow naming conventions",
-    suggestion: "Rename variables to follow standard naming conventions.",
-  },
-  {
-    severity: "low",
-    file: "sample.py",
-    issue: "Good code structure",
-    suggestion: "Maintain current structure; no changes needed.",
-  },
-];
+ // For charbel
+// const humanReviews = [
+//   {
+//     severity: "medium",
+//     file: "sample.py",
+//     issue: "Variable 'c' and 'B' should follow naming conventions",
+//     suggestion: "Rename variables to follow standard naming conventions.",
+//   },
+//   {
+//     severity: "low",
+//     file: "sample.py",
+//     issue: "Good code structure",
+//     suggestion: "Maintain current structure; no changes needed.",
+//   },
+// ];
 
 function getHumanReviews(fileName) {
   return humanReviews.filter((review) => review.file === fileName);
