@@ -20,6 +20,14 @@ async function runApiTests() {
       body: JSON.stringify(sampleCodeSnippet)
     });
 
+    //https://www.geeksforgeeks.org/javascript/how-to-check-if-the-response-of-a-fetch-is-a-json-object-in-javascript/ 
+    // if not returning json
+    const contentType = response.headers.get('content-type');
+    console.log("returning content type of",contentType)
+    if (!contentType.includes('application/json')) {
+          console.log("did not return json you returned:", contentType)
+            return;
+    } 
     if (!response.ok) {
       console.log("error with fetching api endpoint " + response.status);
       return;
@@ -42,7 +50,7 @@ async function runApiTests() {
 
   } catch (err) {
     console.log("Something went wrong:", err.message);
-    console.log("Make sure PHP server is running and endpoint is correct");
+    console.log("Make sure PHP server is running and endpoint is correct and that its correct content type");
   }
 }
 
