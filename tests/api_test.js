@@ -1,53 +1,48 @@
 import dotenv from "dotenv";
+import Ajv from "ajv";
+import schema from "./schema.json"
 dotenv.config();
+
+const ajv = new Ajv();
+const validate = ajv.compile(schema);
+
 const sampleCodeSnippet = {
   file: "sample.py",
   code: "a = c+B"
 };
 
 async function runApiTests() {
-    const allowedSeverities = ["high", "medium", "low"];
-  try {
-    const res = await fetch(process.env.API_ENDPOINT, {
+   try {
+    const response = await fetch(process.env.API_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(sampleCodeSnippet)
+      body: JSON.stringify(sampleCode)
     });
 
-    if (!res.ok) {
-      console.log(`connection failed : ${res.status}`);
+    if (!response.ok) {
+      console.log("error with fetching api endpoint " + response.status);
       return;
+    }else{
+    console.log("API responded with success.");
     }
-    const data = await res.json();
-    console.log("Response fetch successful");
-   
-    // to see if object or not
-      for (let i = 0; i < data.length; i++) {
-      const item = data[i];
-      if (typeof item !== "object" || item === null) {
-        console.log("not object at index " + i);
-        return;
-      }
 
-      const required = ["severity", "file", "issue", "suggestion"];
-      for (let j = 0; j < required.length; j++) {
-        const key = required[j];
-        if (!item[key] || typeof item[key] !== "string" || item[key].trim() === "") {
-          console.log("Invalid field '" + key + "' in item " + i);
-          return;
-        }
-      }
+    const data = await response.json();
+    console.log("Response:", data);
 
-      if (allowedSeverities.indexOf(item.severity.toLowerCase()) === -1) {
-        console.log("Invalid severity in item " + i + ": " + item.severity);
-        return;
-      }
-      console.log("test passed")
+    const valid = validate(data);
+    if (!valid) {
+      console.log("Schema validation failed:");
+      console.log(validate.errors);
+      return;
+    }else{
+    console.log("Schema validation passed.");
+    console.log("All tests passed.");
     }
-  }catch(err){
-    console.log("error :" ,err)
+
+  } catch (err) {
+    console.log("Something went wrong:", err.message);
+    console.log("Make sure PHP server is running and endpoint is correct");
   }
-
 }
 
 runApiTests();
