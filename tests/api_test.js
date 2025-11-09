@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import Ajv from "ajv";
-import schema from "./schema.json"
+//https://stackoverflow.com/questions/78217036/typeerror-err-import-attribute-missing-module-package-json-needs-an-import
+import schema from "./schema.json" with {type:'json'}
 dotenv.config();
 
 const ajv = new Ajv();
@@ -16,7 +17,7 @@ async function runApiTests() {
     const response = await fetch(process.env.API_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(sampleCode)
+      body: JSON.stringify(sampleCodeSnippet)
     });
 
     if (!response.ok) {
