@@ -10,7 +10,7 @@ header('Access-Control-Allow-Headers: Content-Type');
 $response = [
     [
         "severity" => "high",
-        "file" =>  "unknown_file.py",
+        "file" =>  "file.py",
         "issue" => "no validation",
         "suggestion" => "validate the data before sending it"
     ]
