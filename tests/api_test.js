@@ -12,6 +12,26 @@ const sampleCodeSnippet = {
   code: "a = c+B"
 };
 
+const humanReviews = [
+  {
+    severity: "medium",
+    file: "sample.py",
+    issue: "Variable 'c' and 'B' should follow naming conventions",
+    suggestion: "Rename variables to follow standard naming conventions.",
+  },
+  {
+    severity: "low",
+    file: "sample.py",
+    issue: "Good code structure",
+    suggestion: "Maintain current structure; no changes needed.",
+  },
+];
+
+function getHumanReviews(fileName) {
+  return humanReviews.filter((review) => review.file === fileName);
+}
+
+
 async function runApiTests() {
    try {
     const response = await fetch(process.env.API_ENDPOINT, {
@@ -45,9 +65,20 @@ async function runApiTests() {
       return;
     }else{
     console.log("Schema validation passed.");
-    console.log("All tests passed.");
+   
     }
 
+      data.forEach((item) => {
+      const matchingReviews = getHumanReviews(item.file);
+      if (matchingReviews.length > 0) {
+        console.log("Human Reviews Found for file:", item.file);
+        console.log(matchingReviews);
+      } else {
+        console.log("No human review found for file:", item.file);
+      }
+      });
+
+     console.log("All tests passed.");
   } catch (err) {
     console.log("Something went wrong:", err.message);
     console.log("Make sure PHP server is running and endpoint is correct and that its correct content type");
