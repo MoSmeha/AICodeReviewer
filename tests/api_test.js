@@ -1,12 +1,13 @@
-const API_ENDPOINT = "http://localhost/review.php";
-
+import dotenv from "dotenv";
+dotenv.config();
 const sampleCodeSnippet = {
   file: "sample.py",
   code: "a = c+B"
 };
+console.log(process.env.API_ENDPOINT)
 async function runApiTests() {
   try {
-    const res = await fetch(API_ENDPOINT, {
+    const res = await fetch(process.env.API_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(sampleCodeSnippet)
@@ -18,6 +19,8 @@ async function runApiTests() {
     }
     const json = await res.json();
     console.log("Response:", json);
+  }catch(err){
+    console.log("error :" ,err)
   }
 
 }
