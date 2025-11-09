@@ -1,9 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body></body>
+<head>
+    <meta charset="UTF-8">
+    <title>AI Code Review</title>
+    <link rel="stylesheet" href="./styles.css">
+    
+</head>
+<body>
+
+<h2>Send Code to OpenAI</h2>
+
+<textarea id="code" placeholder="Write your code here..."></textarea>
+<br>
+<button id="sendBtn">Send to AI</button>
+
+<pre id="response"></pre>  <!--  preformatted text because we are returning JOSN -->
+
+<script src="./axios.min.js"></script>
+<script src="./script.js"></script>
+</body>
 </html>
