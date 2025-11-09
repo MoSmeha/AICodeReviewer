@@ -1,0 +1,8 @@
+[
+  {
+    "severity": "high|medium|low",
+    "file": "string",
+    "issue": "short identifier of the problem",
+    "suggestion": "concrete remediation step"
+  }
+]
