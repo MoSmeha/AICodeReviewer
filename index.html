@@ -4,12 +4,17 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ai Code Reviewer</title>
+    <link rel="stylesheet" href="./styles/index.css">
   </head>
   <body>
     <h2>Send code to Ai to review</h2>
-    <textarea id="code" placeholder="write your code here"></textarea>
-    <button id="sendBtn">send code to AI</button>
-    <pre id="response"></pre>
+    <div class="containter">
+       <textarea class="textArea" id="code" placeholder="write your code here"></textarea>
+      <button class="sendBtn" id="sendBtn">send code to AI</button>
+      <pre id="response" class="pre"></pre>
+
+    </div>
+   
 
     <script src="./scripts/axios.min.js"></script>
     <script src="./scripts/script.js"></script>

@@ -1,0 +1,24 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.containter{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.textArea{
+    width: 50%;
+    height: 200px;
+}
+
+.sendBtn{
+    width: 150px;
+    height: 50px;
+    font-weight: bold;
+}
+
+.response{
+    background-color:bisque;
+}
