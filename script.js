@@ -40,11 +40,9 @@ async function runApiTests(sampleCodeSnippet) {
     }
 
     const data = await response.json();
-    console.log("Response:", data);
 
-    // show raw response in UI (preserving format)
-    document.getElementById("response").textContent =
-        JSON.stringify(data, null, 3);  // keep the format and make spaces
+
+
 
     const valid = validate(data);
     if (!valid) {
@@ -59,22 +57,28 @@ async function runApiTests(sampleCodeSnippet) {
    
     }
 
-    // Expecting `data` to be an array; if not, handle gracefully
-    if (!Array.isArray(data)) {
-      console.log("Warning: response is not an array. Adjusting to single-item array.");
+    const humanDiv = document.getElementById("humanReviews");
+
+    const responseArray = Array.isArray(data) ? data : [data];
+
+    const allHumanReviews = [];
+    for (let i = 0; i < responseArray.length; i++) {
+        const reviews = getHumanReviews(responseArray[i].file);
+        for (let j = 0; j < reviews.length; j++) {
+            allHumanReviews.push(reviews[j]);
+        }
     }
 
-    (Array.isArray(data) ? data : [data]).forEach((item) => {
-      const matchingReviews = getHumanReviews(item.file);
-      if (matchingReviews.length > 0) {
-        console.log("Human Reviews Found for file:", item.file);
-        console.log(matchingReviews);
-      } else {
-        console.log("No human review found for file:", item.file);
-      }
-    });
+    if (allHumanReviews.length > 0) {
+        humanDiv.textContent = JSON.stringify(allHumanReviews, null, 3);
+    } else {
+        humanDiv.textContent = "No human reviews found for these files.";
+    }
 
      console.log("All tests passed.");
+    document.getElementById("response").textContent =
+    JSON.stringify(data, null, 3);  // keep the format and make spaces
+        console.log("Response:", data);
   } catch (err) {
     console.log("Something went wrong:", err.message);
     console.log("Make sure PHP server is running and endpoint is correct and that its correct content type");
@@ -83,7 +87,6 @@ async function runApiTests(sampleCodeSnippet) {
   }
 }
 
-// Keep the event listener as you had it, but call runApiTests using the textarea input
 document.getElementById("sendBtn").addEventListener("click", async function() {
     var code = document.getElementById("code").value;
 
@@ -110,7 +113,6 @@ document.getElementById("sendBtn").addEventListener("click", async function() {
     // ];
 
     try {
-        // Replace axios usage with our fetch-based runApiTests
         await runApiTests(sampleCodeSnippet);
     } catch (err) {
         document.getElementById("response").textContent = "Error: " + err;

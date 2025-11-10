@@ -53,15 +53,15 @@ $ai_content = $response_decoded['choices'][0]['message']['content'] ?? "[error!]
 $final_review = json_decode($ai_content, true);
 
 // Safety check  if decoding fails, return empty array
-if (!is_array($final_review)) {
-    echo "invalid: check if api key is valid ";
-    $final_review = [];
+// if (!is_array($final_review)) {
+//     echo "invalid: check if api key is valid ";
+//     $final_review = [];
    
-}
+// }
 $response = [
     [
         "severity" => "high",
-        "file" =>  "file.py",
+        "file" =>  "sample.py",
         "issue" => "no validation",
         "suggestion" => "validate the data before sending it"
     ]
