@@ -1,8 +1,9 @@
+// i couldn't make it as file and import it like axois
 import Ajv from "https://cdn.jsdelivr.net/npm/ajv@8.17.1/+esm";
 //https://stackoverflow.com/questions/78217036/typeerror-err-import-attribute-missing-module-package-json-needs-an-import
-import schema from "./tests/schema.json" with { type: "json" };
+import schema from "../Schemas/schema.json" with { type: "json" };
 //i put it in .gitignore to keep it "hidden"
-import humanReviews from "./tests/human_reviews.json" with { type: "json" };
+import humanReviews from "../Schemas/human_reviews.json" with { type: "json" };
 
 const ajv = new Ajv();
 const validate = ajv.compile(schema);
@@ -13,7 +14,7 @@ function getHumanReviews(fileName) {
 
 async function runApiTests(sampleCodeSnippet) {
    try {
-    const response = await fetch("http://localhost/AI/AICodeReviewer/review.php", {
+    const response = await fetch("http://localhost/AI/AICodeReviewer/api/review.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(sampleCodeSnippet)
@@ -40,9 +41,10 @@ async function runApiTests(sampleCodeSnippet) {
     }
 
     const data = await response.json();
+ console.log("Response:", data)
 
-
-
+console.log("AI raw:", data.ai_raw);
+console.log("Parsed review:", data.parsed);
 
     const valid = validate(data);
     if (!valid) {
