@@ -1,6 +1,9 @@
 <?php
 include "config.php";
-
+header('Content-Type: application/json; charset=UTF-8');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
 // Read the input from frontend
 $input = json_decode(file_get_contents("php://input"), true);
 $code = $input["code"] ?? "No code provided";
@@ -24,6 +27,7 @@ $data = [
         ]
     ]
 ];
+
 
 $headers = [
     "Content-Type: application/json",
@@ -50,11 +54,17 @@ $final_review = json_decode($ai_content, true);
 
 // Safety check  if decoding fails, return empty array
 if (!is_array($final_review)) {
-    echo "invalid ";
+    echo "invalid: check if api key is valid ";
     $final_review = [];
    
 }
+$response = [
+    [
+        "severity" => "high",
+        "file" =>  "file.py",
+        "issue" => "no validation",
+        "suggestion" => "validate the data before sending it"
+    ]
+];
 
-//Return JSON to frontend
-header("Content-Type: application/json");
-echo json_encode($final_review);
+echo json_encode($response);
