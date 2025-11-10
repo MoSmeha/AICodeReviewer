@@ -14,7 +14,7 @@ function getHumanReviews(fileName) {
 
 async function runApiTests(sampleCodeSnippet) {
    try {
-    const response = await fetch("http://localhost/AI/AICodeReviewer/api/review.php", {
+    const response = await fetch("http://localhost/assignment/tech/AICodeReviewer/api/review.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(sampleCodeSnippet)
@@ -78,8 +78,19 @@ console.log("Parsed review:", data.parsed);
     }
 
      console.log("All tests passed.");
-    document.getElementById("response").textContent =
-    JSON.stringify(data, null, 3);  // keep the format and make spaces
+   const container = document.getElementById("response");
+        container.innerHTML = ""; // delete previous carts
+
+        for (let i = 0; i < data.length; i++) {
+            const item = data[i];
+            container.innerHTML += `
+                <div class="review-card severity-${item.severity}">
+                    <h3>File: ${item.file}</h3>
+                    <p><strong>severity:</strong> ${item.severity}</p>
+                    <p><strong>Issue:</strong> ${item.issue}</p>
+                    <p><strong>Suggestion:</strong> ${item.suggestion}</p>
+                </div>`;
+        }
         console.log("Response:", data);
   } catch (err) {
     console.log("Something went wrong:", err.message);
