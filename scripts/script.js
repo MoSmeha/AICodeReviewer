@@ -70,9 +70,22 @@ console.log("Parsed review:", data.parsed);
             allHumanReviews.push(reviews[j]);
         }
     }
-
+    console.log(allHumanReviews.length)
     if (allHumanReviews.length > 0) {
-        humanDiv.textContent = JSON.stringify(allHumanReviews, null, 3);
+        // humanDiv.textContent = JSON.stringify(allHumanReviews, null, 3);
+        const container = document.getElementById("response2");
+        container.innerHTML = ""; // delete previous carts
+
+        for (let i = 0; i < allHumanReviews.length; i++) {
+            const item = allHumanReviews[i];
+            container.innerHTML += `
+                <div class="review-card severity-${item.severity}">
+                    <h3>File: ${item.file}</h3>
+                    <p><strong>severity:</strong> ${item.severity}</p>
+                    <p><strong>Issue:</strong> ${item.issue}</p>
+                    <p><strong>Suggestion:</strong> ${item.suggestion}</p>
+                </div>`;
+        }
     } else {
         humanDiv.textContent = "No human reviews found for these files.";
     }
